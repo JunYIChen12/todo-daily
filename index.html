@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>每日待办</title>
+    <link rel="stylesheet" href="styles.css?v=20260604-stop-recurring" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="sidebar" aria-label="日期与概览">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">✓</span>
+          <div>
+            <h1>每日待办</h1>
+            <p>按天记录、按时提醒、重复事项自动出现</p>
+          </div>
+        </div>
+
+        <label class="field">
+          <span>日期</span>
+          <input id="dateInput" type="date" />
+        </label>
+
+        <div class="quick-dates" aria-label="快捷日期">
+          <button id="prevDay" type="button" title="前一天">‹</button>
+          <button id="todayBtn" type="button">今天</button>
+          <button id="nextDay" type="button" title="后一天">›</button>
+        </div>
+
+        <div class="stats" aria-live="polite">
+          <div>
+            <strong id="totalCount">0</strong>
+            <span>全部</span>
+          </div>
+          <div>
+            <strong id="openCount">0</strong>
+            <span>未完成</span>
+          </div>
+          <div>
+            <strong id="doneCount">0</strong>
+            <span>已完成</span>
+          </div>
+        </div>
+
+        <div class="progress-wrap" aria-label="完成进度">
+          <div class="progress-label">
+            <span>完成进度</span>
+            <strong id="progressText">0%</strong>
+          </div>
+          <div class="progress-track">
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+        </div>
+
+        <div class="notice">
+          <strong>提醒说明</strong>
+          <span>后台提醒运行时，关闭网页后也会由本机服务发送 Windows 通知。</span>
+          <span id="notificationStatus" class="notification-status">正在检查通知权限...</span>
+          <div class="notice-actions">
+            <button id="enableNotificationsBtn" type="button">启用系统通知</button>
+            <button id="testNotificationBtn" type="button">测试通知</button>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="workspace" aria-label="待办列表">
+        <header class="workspace-header">
+          <div>
+            <p id="dateLabel" class="eyebrow"></p>
+            <h2>工作待办</h2>
+          </div>
+          <label class="search">
+            <span>搜索</span>
+            <input id="searchInput" type="search" placeholder="关键词、标签或备注" />
+          </label>
+        </header>
+
+        <form id="todoForm" class="composer">
+          <input id="titleInput" type="text" placeholder="添加一件要做的事" maxlength="80" required />
+          <input id="timeInput" type="time" aria-label="待办时间" />
+          <select id="priorityInput" aria-label="优先级">
+            <option value="normal">普通</option>
+            <option value="high">重要</option>
+            <option value="low">稍后</option>
+          </select>
+          <input id="tagInput" type="text" placeholder="标签" maxlength="18" />
+          <label class="check-field">
+            <input id="remindInput" type="checkbox" checked />
+            <span>到点提醒</span>
+          </label>
+          <label class="check-field">
+            <input id="repeatInput" type="checkbox" />
+            <span>每天重复</span>
+          </label>
+          <button type="submit">添加</button>
+        </form>
+
+        <div class="filters" role="group" aria-label="筛选">
+          <button class="filter active" type="button" data-filter="all">全部</button>
+          <button class="filter" type="button" data-filter="open">未完成</button>
+          <button class="filter" type="button" data-filter="done">已完成</button>
+          <button class="filter" type="button" data-filter="high">重要</button>
+          <button class="filter" type="button" data-filter="repeat">每天重复</button>
+        </div>
+
+        <ul id="todoList" class="todo-list" aria-live="polite"></ul>
+
+        <template id="emptyTemplate">
+          <li class="empty-state">
+            <strong>这一天还没有待办</strong>
+            <span>先把脑子里的事放下来，系统替你守着。</span>
+          </li>
+        </template>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="app.js?v=20260604-stop-recurring"></script>
+  </body>
+</html>
