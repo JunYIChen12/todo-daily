@@ -4,7 +4,7 @@
 - Project path: `D:\codex\02_每日待办工具\todo-daily`
 - Remote repo: `https://github.com/JunYIChen12/todo-daily`
 - Branch: `codex/architecture-simplification`
-- Phase: `architect-planning`
+- Phase: `pr-ci-verified`
 - Controller: current Codex session
 - Last updated: 2026-06-14
 
@@ -91,11 +91,17 @@ completed:
 - Checked Git state and remote state.
 - Identified Python backend helper duplication as the first small slice.
 - Created branch `codex/architecture-simplification`.
+- Architect plan written.
+- Developer backend helper refactor completed.
+- Acceptance Tester local verification passed.
+- Commit `aff94c9` pushed to `origin/codex/architecture-simplification`.
+- Draft PR #3 created: `https://github.com/JunYIChen12/todo-daily/pull/3`.
+- PR #3 CI run `27491038609` passed for commit `aff94c9`.
 
 pending:
-- Developer implementation.
-- Acceptance verification.
-- Commit, push, PR, and CI verification.
+- Commit workflow evidence update.
+- Re-run PR CI for evidence update.
+- Merge PR after final CI remains green.
 
 blocked:
 - None.

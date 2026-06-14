@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted locally; waiting for PR and CI verification.
+Accepted locally and on initial PR CI; waiting for final evidence-update CI.
 
 ## Evidence Checked
 
@@ -26,6 +26,15 @@ Results:
   - `tests/__pycache__/`
   - `todo-data/`
 
+GitHub verification:
+
+- PR: `https://github.com/JunYIChen12/todo-daily/pull/3`
+- Initial head commit: `aff94c9408611dc341df99d620ca1312f3219e82`
+- CI run: `27491038609`
+- Check: `Python unit tests`
+- Result: success
+- Mergeability after initial CI: mergeable
+
 ## Acceptance Criteria
 
 | Criterion | Result |
@@ -35,13 +44,15 @@ Results:
 | Local tests pass | Pass: 8 tests |
 | Regression tests cover refactored behavior | Pass |
 | Runtime data not committed | Pass locally |
+| GitHub PR is verifiable | Pass: PR #3 created |
+| Initial PR CI passes | Pass |
 | Frontend/product semantics unchanged | Pass by file scope; frontend files untouched |
 
 ## Remaining Risks
 
 - Windows notification display was not manually exercised; tests cover launcher selection, fallback ordering, and toast command construction.
-- GitHub CI and PR status are not verified yet.
+- A final evidence-update commit will require one more CI pass before merge.
 
 ## Recommendation
 
-Proceed to commit, push, create a draft PR, and verify CI.
+Proceed to final evidence update, verify CI again, and merge if still green.
