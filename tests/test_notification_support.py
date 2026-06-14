@@ -46,6 +46,33 @@ class NotificationSupportTests(unittest.TestCase):
         self.assertTrue(ok)
         fallback.assert_not_called()
 
+    def test_windows_toast_uses_expected_powershell_command(self) -> None:
+        completed = mock.Mock(returncode=0)
+        toast_script = PROJECT_ROOT / "send-toast.ps1"
+
+        with (
+            mock.patch.object(todo_server, "ensure_notification_registration", return_value=True),
+            mock.patch.object(todo_server, "TOAST_SCRIPT_PATH", toast_script),
+            mock.patch.object(todo_server, "run_powershell", return_value=completed) as run_powershell,
+        ):
+            ok = todo_server.show_windows_toast("Title", "Body")
+
+        self.assertTrue(ok)
+        run_powershell.assert_called_once_with(
+            [
+                "-STA",
+                "-File",
+                str(toast_script),
+                "-AppId",
+                todo_server.APP_ID,
+                "-Title",
+                "Title",
+                "-Body",
+                "Body",
+            ],
+            timeout=15,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
