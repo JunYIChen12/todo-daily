@@ -3,7 +3,7 @@
 - Workflow ID: `2026-06-14-github-collaboration-bootstrap`
 - Project path: `D:\codex\02_每日待办工具\todo-daily`
 - Remote repo: `https://github.com/JunYIChen12/todo-daily.git`
-- Phase: `implementation / github-bootstrap`
+- Phase: `verification / pr-collaboration-proof`
 - Controller: current Codex session
 - Last updated: 2026-06-14
 
@@ -86,17 +86,19 @@ Implement the GitHub collaboration baseline, verify locally, push to the empty r
 ## Program Backlog
 
 current:
-- Implement baseline collaboration files.
-- Initialize Git and push `main`.
-- Verify GitHub Actions CI.
+- Prove follow-up branch and pull request workflow.
 
 completed:
 - Controller state created.
 - Architect plan written.
 - Baseline local tests passed before implementation.
+- Git repository initialized on `main`.
+- Runtime data excluded by `.gitignore`.
+- Initial commit `a14f21f` pushed to GitHub.
+- GitHub Actions CI run `27490558032` passed.
 
 pending:
-- Optional follow-up PR proof after initial `main` exists.
+- Create, verify, and merge a documentation-only PR.
 
 blocked:
 - None.
