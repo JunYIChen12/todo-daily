@@ -34,6 +34,10 @@ GitHub verification:
 - CI workflow: `CI`
 - Initial CI run: `27490558032`
 - Result: success
+- PR proof: `#1`
+- PR CI run: `27490598659`, success
+- Merge commit: `69e52e432d69dd6c46dd5bd40cadc96c7fac9eef`
+- Post-merge main CI run: `27490608013`, success
 
 ## Acceptance Criteria
 
@@ -47,6 +51,7 @@ GitHub verification:
 | CI verifies existing tests | Pass |
 | Existing tests pass locally | Pass |
 | Product behavior unchanged | Pass by file-scope review; no product files were edited after baseline import |
+| Branch + PR collaboration flow works | Pass |
 
 ## Remaining Risks
 
