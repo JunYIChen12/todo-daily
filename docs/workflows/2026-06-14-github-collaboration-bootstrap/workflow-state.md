@@ -3,7 +3,7 @@
 - Workflow ID: `2026-06-14-github-collaboration-bootstrap`
 - Project path: `D:\codex\02_每日待办工具\todo-daily`
 - Remote repo: `https://github.com/JunYIChen12/todo-daily.git`
-- Phase: `verification / pr-collaboration-proof`
+- Phase: `complete / reusable-template-captured`
 - Controller: current Codex session
 - Last updated: 2026-06-14
 
@@ -86,7 +86,7 @@ Implement the GitHub collaboration baseline, verify locally, push to the empty r
 ## Program Backlog
 
 current:
-- Prove follow-up branch and pull request workflow.
+- Capture reusable Controller template and human boundary.
 
 completed:
 - Controller state created.
@@ -96,9 +96,13 @@ completed:
 - Runtime data excluded by `.gitignore`.
 - Initial commit `a14f21f` pushed to GitHub.
 - GitHub Actions CI run `27490558032` passed.
+- PR #1 created from `docs/workflow-closeout`.
+- PR #1 CI run `27490598659` passed.
+- PR #1 merged as `69e52e4`.
+- Post-merge main CI run `27490608013` passed.
 
 pending:
-- Create, verify, and merge a documentation-only PR.
+- Merge final template documentation.
 
 blocked:
 - None.
