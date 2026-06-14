@@ -123,6 +123,17 @@ def notification_shortcut_path():
     return PROGRAMS_DIR / APP_SHORTCUT_NAME
 
 
+def run_powershell(args, timeout):
+    return subprocess.run(
+        ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", *args],
+        check=False,
+        creationflags=CREATE_NO_WINDOW,
+        capture_output=True,
+        text=True,
+        timeout=timeout,
+    )
+
+
 def ensure_notification_registration():
     global _notification_registration_ready
     if _notification_registration_ready:
@@ -133,12 +144,8 @@ def ensure_notification_registration():
         return False
 
     try:
-        result = subprocess.run(
+        result = run_powershell(
             [
-                "powershell",
-                "-NoProfile",
-                "-ExecutionPolicy",
-                "Bypass",
                 "-File",
                 str(SHORTCUT_SCRIPT_PATH),
                 "-ShortcutPath",
@@ -154,10 +161,6 @@ def ensure_notification_registration():
                 "-IconPath",
                 str(notification_icon_path()),
             ],
-            check=False,
-            creationflags=CREATE_NO_WINDOW,
-            capture_output=True,
-            text=True,
             timeout=20,
         )
         if result.returncode != 0:
@@ -175,12 +178,8 @@ def show_windows_toast(title, body):
         return False
 
     try:
-        result = subprocess.run(
+        result = run_powershell(
             [
-                "powershell",
-                "-NoProfile",
-                "-ExecutionPolicy",
-                "Bypass",
                 "-STA",
                 "-File",
                 str(TOAST_SCRIPT_PATH),
@@ -191,10 +190,6 @@ def show_windows_toast(title, body):
                 "-Body",
                 str(body),
             ],
-            check=False,
-            creationflags=CREATE_NO_WINDOW,
-            capture_output=True,
-            text=True,
             timeout=15,
         )
         if result.returncode != 0:
@@ -241,12 +236,8 @@ try {{
 }}
 """
     try:
-        result = subprocess.run(
-            ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-STA", "-Command", script],
-            check=False,
-            creationflags=CREATE_NO_WINDOW,
-            capture_output=True,
-            text=True,
+        result = run_powershell(
+            ["-STA", "-Command", script],
             timeout=NOTIFICATION_KEEPALIVE_SECONDS + 10,
         )
         if result.returncode != 0:
@@ -311,6 +302,26 @@ def reminder_loop():
         time.sleep(20)
 
 
+def notification_keys_before(notified, today_key):
+    return [key for key in notified if not key.startswith(today_key)]
+
+
+def todo_time_minutes(todo):
+    try:
+        hours, minutes = [int(part) for part in todo["time"].split(":")[:2]]
+    except Exception:
+        return None
+    return hours * 60 + minutes
+
+
+def is_reminder_due(todo_minutes, current_minutes):
+    return todo_minutes <= current_minutes <= todo_minutes + REMINDER_CATCH_UP_MINUTES
+
+
+def reminder_key(todo, today_key):
+    return f"{today_key}-{todo.get('id')}-{todo.get('time')}"
+
+
 def check_due_reminders():
     store = normalize_store(read_json(STORE_PATH, empty_store()))
     notified = read_json(NOTIFIED_PATH, {})
@@ -319,23 +330,20 @@ def check_due_reminders():
     current_minutes = now.hour * 60 + now.minute
     changed = False
 
-    old_keys = [key for key in notified if not key.startswith(today_key)]
-    for key in old_keys:
+    for key in notification_keys_before(notified, today_key):
         del notified[key]
         changed = True
 
     for todo in day_todos(store, now):
         if not todo.get("time") or not todo.get("remind") or todo.get("done"):
             continue
-        try:
-            hours, minutes = [int(part) for part in todo["time"].split(":")[:2]]
-        except Exception:
+        todo_minutes = todo_time_minutes(todo)
+        if todo_minutes is None:
             continue
-        todo_minutes = hours * 60 + minutes
-        reminder_key = f"{today_key}-{todo.get('id')}-{todo.get('time')}"
-        if todo_minutes <= current_minutes <= todo_minutes + REMINDER_CATCH_UP_MINUTES and reminder_key not in notified:
+        key = reminder_key(todo, today_key)
+        if is_reminder_due(todo_minutes, current_minutes) and key not in notified:
             if toast("待办提醒", f"{todo.get('time')} {todo.get('title', '')}"):
-                notified[reminder_key] = now.isoformat(timespec="seconds")
+                notified[key] = now.isoformat(timespec="seconds")
                 changed = True
 
     if changed:
